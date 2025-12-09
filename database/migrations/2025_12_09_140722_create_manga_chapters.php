@@ -11,13 +11,13 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('manga', function (Blueprint $table) {
+        Schema::create('manga_chapters', function (Blueprint $table) {
             $table->id();
-            $table->string('title')->unique();
-            $table->text('description');
-            $table->unsignedBigInteger('author_id');
-            $table->foreign('author_id')->references('id')->on('users')->onDelete('cascade');
+            $table->unsignedBigInteger('manga_id');
+            $table->unsignedInteger('chapter_number');
+            $table->foreign('manga_id')->references('id')->on('manga')->onDelete('cascade');
             $table->timestamps();
+            $table->unique(['manga_id', 'chapter_number']);
         });
     }
 
@@ -26,6 +26,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('manga');
+        Schema::dropIfExists('manga_chapters');
     }
 };
