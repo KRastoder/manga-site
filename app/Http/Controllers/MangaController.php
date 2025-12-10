@@ -32,8 +32,5 @@ class MangaController extends Controller
             'mangas' => $mangas,
         ]);
     }
-    public function fetchChapter($manga_id , $chapter_id){
-        dd("controler");
-    }
     
 }

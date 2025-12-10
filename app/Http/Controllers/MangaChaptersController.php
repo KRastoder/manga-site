@@ -19,6 +19,14 @@ class MangaChaptersController extends Controller
         return redirect()->back();
     }
     public function getChaptersById($manga_id,$chapter_id){
-        return view('');
+        return view('manga.addPagesToChapter',[
+            'manga_id' => $manga_id,
+            'chapter_id' => $chapter_id,
+        ]);
+    }
+    public function uploadChapters(Request $request,$manga_id ,$chapter_id){
+        $this->mangaChaptersRepo->upload($request,$manga_id,$chapter_id );
+
+
     }
 }
