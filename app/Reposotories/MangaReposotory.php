@@ -3,6 +3,7 @@
 namespace App\Reposotories;
 
 use App\Models\Manga;
+use App\Models\MangaChapters;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Storage;
@@ -10,8 +11,7 @@ use Illuminate\Support\Facades\Storage;
 class MangaReposotory
 {
     private $mangaModel;
-
-
+    private $chaptersModel;
 
     public function __construct()
     {
@@ -30,8 +30,12 @@ class MangaReposotory
         Storage::disk('public')->makeDirectory("manga/$folderName");
     }
 
-    public function myMangas(){
-
-        return $this->mangaModel->where('author_id',Auth::id())->get();
+    public function myMangas()
+    {
+        return auth()
+            ->user()
+            ->mangas() 
+            ->with('chapters')
+            ->get();
     }
 }

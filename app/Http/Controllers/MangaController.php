@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Reposotories\MangaChaptersReposotory;
 use App\Reposotories\MangaReposotory;
 use App\Http\Requests\CreateMangaRequest;
 
@@ -12,6 +13,7 @@ class MangaController extends Controller
     public function __construct()
     {
         $this->mangaRepo = new MangaReposotory();
+    
     }
     public function createMangaForm()
     {
@@ -30,4 +32,8 @@ class MangaController extends Controller
             'mangas' => $mangas,
         ]);
     }
+    public function fetchChapter($manga_id , $chapter_id){
+        dd("controler");
+    }
+    
 }

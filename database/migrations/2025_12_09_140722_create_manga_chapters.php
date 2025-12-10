@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('manga_chapters', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('manga_id');
-            $table->unsignedInteger('chapter_number');
+            $table->unsignedInteger('chapter_number')->default(0);
             $table->foreign('manga_id')->references('id')->on('manga')->onDelete('cascade');
             $table->timestamps();
             $table->unique(['manga_id', 'chapter_number']);
