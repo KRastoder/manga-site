@@ -5,8 +5,8 @@
 @endsection
 
 @section('content')
-<p>Be sure to name pages in numerical order so first chapter 1 second 2 and etc thats how we will sort them</p>
-<form action="{{ route('chapters.uploadPages', [$manga_id, $chapter_id]) }}" method="POST" enctype="multipart/form-data">
+    <p>Be sure to upload in order if you do many at once</p>
+    <form action="{{ route('chapters.uploadPages', [$manga_id, $chapter_id]) }}" method="POST" enctype="multipart/form-data">
         @csrf
 
         <input type="hidden" name = 'manga_id' value="{{ $manga_id }}">

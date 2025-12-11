@@ -26,6 +26,7 @@ class MangaChaptersController extends Controller
     }
     public function uploadChapters(Request $request,$manga_id ,$chapter_id){
         $this->mangaChaptersRepo->upload($request,$manga_id,$chapter_id );
+        return redirect()->back();
 
 
     }

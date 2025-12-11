@@ -34,7 +34,7 @@ class MangaChaptersReposotory
                 'manga_id' => $id,
                 'chapter_number' => 1,
             ]);
-            $folderName = Str::slug($request->mangaTitle) . '-' . $id;
+            $folderName = $id;
             Storage::disk('public')->makeDirectory("manga/$folderName/1");
         }
         return redirect()->back();
@@ -47,24 +47,26 @@ class MangaChaptersReposotory
             'pages.*' => 'image|mimes:jpg,jpeg,png,webp|max:4096',
         ]);
 
-        // Get manga title
-        $mangaTitle = Manga::findOrFail($manga_id)->title;
+        $folderName = $manga_id;
 
-        // Folder: slug-of-title-chapterId
-        $folderName = Str::slug($mangaTitle) . '-' . $chapter_id;
+        $lastPage = ChapterPages::where('chapter_id', $chapter_id)->max('page_number') ?? 0;
 
         foreach ($request->file('pages') as $index => $image) {
-            // Store file in public storage
-            $path = $image->store("manga/$folderName", 'public');
+            $pageNumber = $lastPage + $index + 1;
 
-            // Save page to chapter_pages db table
+            $extension = $image->getClientOriginalExtension();
+
+            $filename = $pageNumber . '.' . $extension;
+
+            $path = $image->storeAs("manga/$folderName", $filename, 'public');
+
             ChapterPages::create([
+                'manga_id' => $manga_id,
                 'chapter_id' => $chapter_id,
-                'page_number' => $index + 1,
+                'page_number' => $pageNumber,
                 'path_to_page' => $path,
             ]);
         }
 
-        return back()->with('success', 'Pages uploaded successfully!');
     }
 }
