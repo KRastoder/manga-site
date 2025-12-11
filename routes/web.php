@@ -16,6 +16,9 @@ Route::get('/dashboard', function () {
     ->middleware(['auth', 'verified'])
     ->name('dashboard');
 
+Route::get('manga/{manga_id}/{chapter_id}',[MangaChaptersController::class,'showChapter']); 
+
+
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
@@ -25,7 +28,6 @@ Route::middleware('auth')->group(function () {
     Route::post('/create-manga', [MangaController::class, 'create'])->name('manga.create');
     Route::get('/my-mangas', [MangaController::class, 'myMangas'])->name('manga.my-mangas');
     Route::post('/my-mangas/{manga_id}/{chapter_id}/upload', [MangaChaptersController::class, 'uploadChapters'])->name('chapters.uploadPages');
-
     Route::post('/create-chapter/{id}', [MangaChaptersController::class, 'createChapter'])->name('chapter.create');
 
     Route::get('/my-mangas/{manga_id}/{chapter_id}', [MangaChaptersController::class, 'getChaptersById'])->middleware(EnsureUserIsMangaAuthor::class);

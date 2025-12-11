@@ -13,9 +13,12 @@ use Illuminate\Http\Request;
 class MangaChaptersReposotory
 {
     private $mangaChaptersModel;
+    private $chapterPagesModel;
     public function __construct()
     {
         $this->mangaChaptersModel = new MangaChapters();
+        $this->chapterPagesModel = new ChapterPages();
+        
     }
     public function create($id, $request)
     {
@@ -49,7 +52,7 @@ class MangaChaptersReposotory
 
         $folderName = $manga_id;
 
-        $lastPage = ChapterPages::where('chapter_id', $chapter_id)->max('page_number') ?? 0;
+        $lastPage = $this->chapterPagesModel->where('chapter_id', $chapter_id)->max('page_number') ?? 0;
 
         foreach ($request->file('pages') as $index => $image) {
             $pageNumber = $lastPage + $index + 1;
@@ -60,7 +63,7 @@ class MangaChaptersReposotory
 
             $path = $image->storeAs("manga/$folderName", $filename, 'public');
 
-            ChapterPages::create([
+            $this->chapterPagesModel->create([
                 'manga_id' => $manga_id,
                 'chapter_id' => $chapter_id,
                 'page_number' => $pageNumber,
@@ -68,5 +71,8 @@ class MangaChaptersReposotory
             ]);
         }
 
+    }
+    public function showChapters($manga_id,$chapter_id){
+        return $this->chapterPagesModel->where('manga_id',$manga_id)->where('chapter_id',$chapter_id)->get();
     }
 }

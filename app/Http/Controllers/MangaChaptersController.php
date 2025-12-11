@@ -27,7 +27,20 @@ class MangaChaptersController extends Controller
     public function uploadChapters(Request $request,$manga_id ,$chapter_id){
         $this->mangaChaptersRepo->upload($request,$manga_id,$chapter_id );
         return redirect()->back();
+    }
+    public function showChapter($chapter_id , $manga_id){
+        $chapters = $this->mangaChaptersRepo->showChapters($manga_id,$chapter_id);
 
+        if($chapters->isEmpty()){
+            return abort(404);;
+        }
+
+        return view('manga.showChapterPages',[
+            'chapters'=> $chapters,
+        ]);
+
+
+        
 
     }
 }
